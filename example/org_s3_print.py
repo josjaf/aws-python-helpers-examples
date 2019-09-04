@@ -1,8 +1,8 @@
 import boto3
 import jmespath
-import newport_helpers
+from newport_helpers import NPH
 
-NPH = newport_helpers.NPH()
+NPH = NPH.NPH()
 
 def process_accounts(account, session, results):
     account_results = []
