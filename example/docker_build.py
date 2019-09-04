@@ -12,11 +12,11 @@ post_build:
 """
 import logging
 
-from stacker.lookups.handlers.output import OutputLookup
-from stacker.lookups.handlers.rxref import RxrefLookup
-from stacker.lookups.handlers.xref import XrefLookup
-from stacker.session_cache import get_session
-from stacker.logger import setup_logging
+# from stacker.lookups.handlers.output import OutputLookup
+# from stacker.lookups.handlers.rxref import RxrefLookup
+# from stacker.lookups.handlers.xref import XrefLookup
+# from stacker.session_cache import get_session
+# from stacker.logger import setup_logging
 from botocore.exceptions import ClientError
 
 import boto3
@@ -24,16 +24,16 @@ import docker
 import datetime
 import git
 from base64 import b64decode
-import newport_helpers
+from newport_helpers import NPH
 
-NPH = newport_helpers.NPH()
+NPH = NPH.NPH()
 
 logger = logging.getLogger(__name__)
 
 
 def main():
     session = boto3.session.Session()
-    handler = OutputLookup.handle
+    #handler = OutputLookup.handle
     ecr_name = 'josjaffe'
 
     t = datetime.datetime.now()
