@@ -8,7 +8,7 @@ def main():
     aws_credentials = NPH.AWSCredentialHelpers.get_credentials()
     combine = {**env, **aws_credentials}
     print(combine)
-    run = NPH.Docker_Helpers.run_docker(environment_variables=combine, image_name='newport-helpers', container_name='newport-helpers-example')
+    run = NPH.Docker_Helpers.run_docker(environment_variables=combine, image_name='hello-world', container_name='newport-helpers-example', command='echo hi')
 
     return
 

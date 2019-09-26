@@ -5,13 +5,14 @@ from newport_helpers import NPH
 from multiprocessing import Process
 import multiprocessing
 manager = multiprocessing.Manager()
-
+from newport_helpers import log_helpers
 
 NPH = NPH.NPH()
+logger = log_helpers.LogHeloers().get_logger()
 
 def process_accounts(account, master_session, results, **kwargs):
     try:
-        print(account)
+        logger.info(account)
         account_results = []
         session = NPH.Helpers.get_child_session(account, 'OrganizationAccountAccessRole', master_session)
         s3 = session.client('s3')
@@ -26,7 +27,7 @@ def process_accounts(account, master_session, results, **kwargs):
         # print(account_total)
         results.append(account_total)
     except Exception as e:
-        print(e)
+        logger.info(e)
 
 
 
