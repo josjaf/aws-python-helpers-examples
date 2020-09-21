@@ -4,7 +4,6 @@ from botocore.exceptions import ClientError
 import boto3
 import docker
 import datetime
-import git
 from base64 import b64decode
 from newport_helpers import NPH
 
