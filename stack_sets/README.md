@@ -1,0 +1,1 @@
+# See https://github.com/josjaf/aws-cfn-stack-sets for more info
