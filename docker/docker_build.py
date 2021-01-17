@@ -5,9 +5,7 @@ import boto3
 import docker
 import datetime
 from base64 import b64decode
-from newport_helpers import NPH
-
-NPH = NPH.NPH()
+from newport_helpers import docker_helpers
 
 logger = logging.getLogger(__name__)
 
@@ -27,8 +25,9 @@ def main():
     docker_file = './Dockerfile'
     build_kwargs = dict(tag=tag, docker_file=docker_file, labels=labels, path=path)
 
-    NPH.Docker_Helpers.docker_build_image(**build_kwargs)
-    NPH.Docker_Helpers.ecr_push(session=session, tag=tag, ecr_name=ecr_name)
+    docker_helpers.docker_build_image(**build_kwargs)
+    # response, username, password, registry, login_registry = docker_helpers.ecr_login(session, 'josjaffe')
+    docker_helpers.ecr_push(session=session, tag=tag, ecr_name=ecr_name)
 
     return labels
 
