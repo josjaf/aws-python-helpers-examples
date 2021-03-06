@@ -4,7 +4,7 @@ import jmespath
 from newport_helpers import org_helpers
 import threading
 
-def process_accounts(account, session, results):
+def process_accounts(account, session, results, local_account_id):
 
     iam = session.client('iam')
 
@@ -19,7 +19,7 @@ def process_accounts(account, session, results):
                 "Sid": "",
                 "Effect": "Allow",
                 "Principal": {
-                    "AWS": "arn:aws:iam::805159726499:root"
+                    "AWS": f"arn:aws:iam::{local_account_id}:root"
                 },
                 "Action": "sts:AssumeRole"
             }
@@ -52,10 +52,13 @@ def process_accounts(account, session, results):
 
 
 def main():
+    session = boto3.session.Session()
+    local_acount_id = session.client('sts').get_caller_identity()['Account']
+    print(local_acount_id)
     results = []
     threads = []
     for account, session in org_helpers.org_loop_entry():
-        process_accounts(account, session, results)
+        process_accounts(account, session, results, local_acount_id)
 
 if __name__ == '__main__':
     main()
