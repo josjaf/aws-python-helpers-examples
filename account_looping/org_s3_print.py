@@ -1,8 +1,8 @@
 import boto3
 import jmespath
-from newport_helpers import NPH
+from newport_helpers import org_helpers
 
-NPH = NPH.NPH()
+
 
 def process_accounts(account, session, results):
     account_results = []
@@ -22,7 +22,7 @@ def process_accounts(account, session, results):
 def main():
     results = []
 
-    for account, session in NPH.Org_Helpers.org_loop_entry():
+    for account, session in org_helpers.org_loop_entry():
         process_accounts(account, session, results)
     print(results)
 

@@ -1,20 +1,17 @@
 import boto3
 import jmespath
-from newport_helpers import NPH
-
 from multiprocessing import Process
 import multiprocessing
-manager = multiprocessing.Manager()
-from newport_helpers import log_helpers
 
-NPH = NPH.NPH()
-logger = log_helpers.LogHeloers().get_logger()
+from newport_helpers import log_helpers, org_helpers, helpers
+import newport_helpers
+logger = newport_helpers.NewportHelpers().logger
 
 def process_accounts(account, master_session, results, **kwargs):
     try:
-        logger.info(account)
+        print(account)
         account_results = []
-        session = NPH.Helpers.get_child_session(account, 'OrganizationAccountAccessRole', master_session)
+        session = helpers.get_child_session(account, 'OrganizationAccountAccessRole', master_session)
         s3 = session.client('s3')
         response = s3.list_buckets()
 
@@ -27,32 +24,33 @@ def process_accounts(account, master_session, results, **kwargs):
         # print(account_total)
         results.append(account_total)
     except Exception as e:
-        logger.info(e)
+        print(e)
 
 
 
     return
 
 
-def main():
-    global results
-    results = manager.list()
+
+
+
+if __name__ == '__main__':
+
+    results = multiprocessing.Manager().list()
     procs = []
     kwargs = {}
     master_session = boto3.session.Session()
-    for account in NPH.Org_Helpers.get_org_accounts(master_session):
+    for account in org_helpers.get_org_accounts(master_session):
         proc = Process(target=process_accounts,
-                    args=(account, master_session, results),
-                    kwargs=kwargs)
+                       args=(account, master_session, results),
+                       kwargs=kwargs)
         procs.append(proc)
-        proc.start()
 
+        # proc.start()
+    for proc in procs:
+        proc.start()
         #process_accounts(account, session, results)
     for proc in procs:
         proc.join()
         # print(account)
     print(f"Results: {results}")
-
-
-if __name__ == '__main__':
-    main()
